@@ -1,0 +1,86 @@
+---
+// overlay: floats over full-screen content (manifesto) instead of sitting on top of it
+interface Props { overlay?: boolean }
+const { overlay = false } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const nav = [
+  { href: '/ideas', label: 'ideas' },
+  { href: '/team', label: 'team' },
+  { href: '/manifesto', label: 'manifesto' },
+];
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class:list={['head', { overlay, tex: !overlay }]}>
+  <a class="home" href="/" aria-label="tinymachines — home">
+    <img class="wordmark" src="/img/wordmark.png" alt="tinymachines" width="1250" height="468">
+  </a>
+  <nav aria-label="main">
+    {nav.map((item) => (
+      <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+    ))}
+  </nav>
+</header>
+
+{overlay && (
+  <script>
+    // flip the header to white while a dark card sits under it
+    const head = document.querySelector<HTMLElement>('.head')!;
+    const cards = document.querySelectorAll<HTMLElement>('[data-tone]');
+    let ticking = false;
+    function update() {
+      ticking = false;
+      const y = head.offsetHeight / 2;
+      let dark = false;
+      cards.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= y && r.bottom > y) dark = el.dataset.tone === 'dark';
+      });
+      head.classList.toggle('on-dark', dark);
+    }
+    addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    addEventListener('resize', update);
+    update();
+  </script>
+)}
+
+<style>
+  .head {
+    height: var(--head);
+    padding: 0 var(--pad);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--hair);
+  }
+  .head.overlay {
+    position: fixed;
+    left: 0; right: 0;
+    background: transparent;
+    border-bottom: 0;
+    pointer-events: none;
+  }
+  .head.overlay a { pointer-events: auto; }
+
+  .home:hover { opacity: .6; }
+  .wordmark { width: clamp(120px, 13vw, 190px); height: auto; transition: filter .2s ease; }
+
+  nav {
+    display: flex;
+    gap: clamp(14px, 2vw, 32px);
+    font-size: clamp(11px, 0.9vw, 13px);
+    letter-spacing: 0.08em;
+  }
+  nav a { border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .15s ease, color .2s ease; }
+  nav a:hover, nav a[aria-current="page"] { border-color: currentColor; }
+
+  .on-dark .wordmark { filter: invert(1); }
+  .on-dark nav { color: #FFFFFF; }
+</style>

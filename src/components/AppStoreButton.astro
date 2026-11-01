@@ -1,0 +1,7 @@
+---
+interface Props { href?: string; solid?: boolean }
+const { href, solid = false } = Astro.props;
+---
+{href
+  ? <a class:list={['btn', { solid }]} href={href} target="_blank" rel="noopener">download on the App Store ↗</a>
+  : <span class="btn" aria-disabled="true">soon on the App Store</span>}

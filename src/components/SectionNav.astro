@@ -1,0 +1,35 @@
+---
+// In-page index for long pages: sticky column on desktop, chips row on mobile
+interface Props { items: { slug: string; text: string }[] }
+const { items } = Astro.props;
+---
+{items.length > 1 && (
+  <nav class="toc" aria-label="on this page">
+    {items.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+  </nav>
+)}
+
+<style>
+  .toc {
+    position: sticky;
+    top: calc(var(--head) + 24px);
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: clamp(11px, 0.9vw, 13px);
+    letter-spacing: 0.04em;
+  }
+  .toc a { color: var(--grey); transition: color .15s ease; }
+  .toc a:hover { color: var(--ink); }
+
+  @media (max-width: 860px) {
+    .toc {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .toc a { border: 1px solid var(--hair); padding: 8px 12px; }
+  }
+</style>

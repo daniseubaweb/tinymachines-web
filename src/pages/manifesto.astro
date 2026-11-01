@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import { principles } from '../data/principles';
+---
+<Base
+  title="the manifesto"
+  description="Six principles we build by. Does one thing. Loves it. Not just handy. Happy. Accessible by design. No dark patterns. Ever. Built in public. Always a wink."
+  snap
+>
+  {principles.map((p) => (
+    <section
+      class:list={['sec', `s-${p.surface}`, `s${p.num}`, { tex: p.surface === 'paper' }]}
+      data-tone={p.surface === 'black' ? 'dark' : 'light'}
+    >
+      <div class="num">{p.num} / 06</div>
+      <div class="stmt">{p.stmt.map((line, i) => <>{i > 0 && <br />}{line}</>)}</div>
+      <div class="row">
+        <div class="gloss">{p.gloss.map((line, i) => <>{i > 0 && <br />}{line}</>)}</div>
+        <img class={`px px-${p.icon}`} src={`/img/px-${p.icon}.png`} alt="">
+      </div>
+    </section>
+  ))}
+</Base>
+
+<style>
+  /* one principle per screen; scrolling snaps to the next */
+  .sec {
+    min-height: 100vh;
+    min-height: 100svh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    padding: calc(var(--head) + clamp(16px, 2vw, 32px)) var(--pad) clamp(40px, 5.8vw, 84px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    overflow: hidden;
+  }
+
+  .num {
+    font-size: var(--small);
+    letter-spacing: 0.18em;
+  }
+  .stmt {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(38px, 7.2vw, 108px);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    max-width: 1000px;
+  }
+  .row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(20px, 3.3vw, 48px);
+  }
+  .gloss {
+    font-size: clamp(12px, 1.05vw, 15px);
+    line-height: 1.7;
+  }
+  .px { width: auto; image-rendering: pixelated; flex: none; }
+  .px-heart  { height: clamp(62px, 8.10vw, 116px); }
+  .px-wink   { height: clamp(68px, 8.90vw, 128px); }
+  .px-person { height: clamp(66px, 8.60vw, 124px); }
+  .px-cursor { height: clamp(72px, 9.30vw, 134px); }
+  .px-arrow  { height: clamp(56px, 7.20vw, 104px); }
+  .px-smiley { height: clamp(68px, 8.75vw, 126px); }
+
+  /* surfaces — one accent per section */
+  .s-paper { background: var(--paper); }
+  .s-paper .num { color: var(--grey); }
+  .s-mint  { background: var(--mint); }
+  .s-blue  { background: var(--blue); }
+  .s-pink  { background: var(--pink); }
+  .s-mint .num, .s-blue .num, .s-pink .num { color: var(--ink); opacity: 0.55; }
+  .s-black { background: var(--ink); color: #FFFFFF; }
+  .s-black .num { color: #9A9A94; }
+
+  /* the long statement gets its own scale */
+  .s03 .stmt { font-size: clamp(32px, 6.4vw, 96px); max-width: 1080px; }
+
+  @media (max-width: 720px) {
+    .s03 .stmt br { display: none; }
+  }
+</style>

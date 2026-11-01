@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import IdeaGrid from '../components/IdeaGrid.astro';
+import { principles } from '../data/principles';
+---
+<Base description="tinymachines — a studio making tiny machines. Small apps, smaller games. Games, apps and other small machines for a kinder, brighter internet.">
+  <section class="hero tex">
+    <img class="wordmark" src="/img/wordmark.png" alt="tinymachines" width="1250" height="468">
+    <div class="tagline">Small ideas. Big play.</div>
+    <p class="lead">a studio making tiny machines —</p>
+    <p class="sub">small apps, smaller games. <span>we do this, and only this.</span></p>
+  </section>
+
+  <section class="ideas tex" id="ideas">
+    <div class="intro">
+      <div class="kicker">ideas</div>
+      <p class="body-text">Games, apps and other small machines for a kinder, brighter internet. Each one does one thing, and loves it.</p>
+    </div>
+    <IdeaGrid />
+  </section>
+
+  <section class="manifesto">
+    <div class="intro">
+      <div class="kicker">the manifesto</div>
+      <h2 class="title">six principles we build by.</h2>
+    </div>
+    <ol>
+      {principles.map((p) => (
+        <li><span class="n">{p.num}</span>{p.stmt.join(' ')}</li>
+      ))}
+    </ol>
+    <a class="link" href="/manifesto">read the manifesto →</a>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    min-height: calc(80svh - var(--head));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(48px, 5vw, 72px) var(--pad);
+  }
+  .wordmark { width: clamp(240px, 36vw, 520px); height: auto; }
+  .tagline {
+    margin-top: clamp(20px, 2.1vw, 30px);
+    font-size: clamp(11px, 0.9vw, 13px);
+    letter-spacing: 0.06em;
+  }
+  .lead {
+    margin: clamp(40px, 4vw, 58px) 0 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+  }
+  .sub {
+    margin: clamp(14px, 1.1vw, 16px) 0 0;
+    font-family: var(--sans);
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.5;
+  }
+  .sub span { color: var(--grey); }
+
+  .ideas, .manifesto {
+    padding: clamp(56px, 6.7vw, 96px) var(--pad);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 3.3vw, 48px);
+  }
+  .ideas { border-top: 1px solid var(--hair); }
+  .intro { display: flex; flex-direction: column; gap: 14px; }
+  .body-text { margin: 0; }
+
+  .manifesto { background: var(--mint); align-items: flex-start; }
+  .manifesto .kicker { color: var(--ink); opacity: .55; }
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 0 clamp(20px, 3vw, 48px);
+  }
+  li {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.25;
+  }
+  .n { font-family: var(--mono); font-weight: 400; font-size: var(--small); padding-top: 6px; opacity: .55; }
+</style>

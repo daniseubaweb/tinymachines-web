@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import AppStoreButton from './AppStoreButton.astro';
+
+interface Props { idea: CollectionEntry<'ideas'> }
+const { idea } = Astro.props;
+const { name, tagline, icon, appStore, color } = idea.data;
+---
+<article class:list={['card', `c-${color}`]}>
+  <a class="top" href={`/ideas/${idea.id}`}>
+    <img class="icon" src={icon} alt="" width="512" height="512" loading="lazy">
+    <h3>{name}</h3>
+    <p>{tagline}</p>
+  </a>
+  <div class="actions">
+    <AppStoreButton href={appStore} />
+    <a class="link" href={`/ideas/${idea.id}`}>more about it →</a>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    padding: clamp(20px, 2.2vw, 32px);
+    border: 1px solid var(--ink);
+    background: var(--paper);
+  }
+  .c-mint { background: var(--mint); }
+  .c-blue { background: var(--blue); }
+  .c-pink { background: var(--pink); }
+
+  .icon { width: 72px; height: 72px; border-radius: 16px; }
+  h3 {
+    margin: 20px 0 0;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(26px, 2.4vw, 34px);
+    letter-spacing: -0.02em;
+  }
+  p {
+    margin: 8px 0 0;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 20px;
+  }
+</style>

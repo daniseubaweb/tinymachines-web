@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import IdeaGrid from '../../components/IdeaGrid.astro';
+---
+<Base title="ideas" description="Every tiny machine we've made so far.">
+  <section class="page tex">
+    <div class="intro">
+      <div class="kicker">ideas</div>
+      <h1 class="title">tiny machines,<br>so far.</h1>
+      <p class="body-text">Small apps, smaller games. Each one does one thing, and loves it.</p>
+    </div>
+    <IdeaGrid />
+  </section>
+</Base>
+
+<style>
+  .page {
+    padding: clamp(48px, 5.8vw, 84px) var(--pad) clamp(56px, 6.7vw, 96px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(36px, 4.4vw, 64px);
+  }
+  .intro { display: flex; flex-direction: column; gap: 18px; }
+  .body-text { margin: 0; }
+</style>

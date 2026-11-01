@@ -1,0 +1,97 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import AppStoreButton from '../../components/AppStoreButton.astro';
+import SectionNav from '../../components/SectionNav.astro';
+import { getIdeas } from '../../data/ideas';
+
+export async function getStaticPaths() {
+  const ideas = await getIdeas();
+  return ideas.map((idea) => ({ params: { slug: idea.id }, props: { idea } }));
+}
+
+const { idea } = Astro.props;
+const { name, tagline, icon, appStore, color } = idea.data;
+const { Content, headings } = await render(idea);
+const sections = headings.filter((h) => h.depth === 2);
+---
+<Base title={name} description={tagline}>
+  <section class:list={['hero', `c-${color}`, { tex: color === 'paper' }]}>
+    <a class="back" href="/ideas">← all ideas</a>
+    <img class="icon" src={icon} alt="" width="512" height="512">
+    <h1 class="title">{name}</h1>
+    <p class="body-text">{tagline}</p>
+    <AppStoreButton href={appStore} solid />
+  </section>
+
+  <div class="layout">
+    <SectionNav items={sections} />
+    <article class="prose">
+      <Content />
+    </article>
+  </div>
+
+  <section class="end">
+    <AppStoreButton href={appStore} solid />
+    <div class="links">
+      <a class="link" href="/ideas">← all ideas</a>
+      <a class="link" href="/">back home</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: clamp(36px, 4.4vw, 64px) var(--pad) clamp(48px, 5.8vw, 84px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .c-paper { background: var(--paper); }
+  .c-mint { background: var(--mint); }
+  .c-blue { background: var(--blue); }
+  .c-pink { background: var(--pink); }
+  .back { font-size: var(--small); letter-spacing: 0.12em; margin-bottom: clamp(12px, 2vw, 32px); }
+  .back:hover { opacity: .6; }
+  .icon { width: clamp(88px, 9vw, 128px); height: auto; border-radius: 22%; }
+  .body-text { margin: 0 0 12px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 96px);
+    padding: clamp(48px, 5.8vw, 84px) var(--pad);
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .prose { max-width: 680px; }
+  .prose :global(h2) {
+    margin: 0 0 14px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(28px, 3vw, 44px);
+    letter-spacing: -0.02em;
+    scroll-margin-top: calc(var(--head) + 24px);
+  }
+  .prose :global(h2:not(:first-child)) { margin-top: clamp(40px, 4.4vw, 64px); }
+  .prose :global(p), .prose :global(li) {
+    font-family: var(--sans);
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.6;
+  }
+  .prose :global(img) { margin: 24px 0; }
+
+  .end {
+    padding: clamp(36px, 4.4vw, 64px) var(--pad);
+    border-top: 1px solid var(--hair);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .links { display: flex; gap: 24px; }
+</style>

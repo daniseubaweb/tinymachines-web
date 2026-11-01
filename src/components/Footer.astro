@@ -1,0 +1,46 @@
+---
+interface Props { snap?: boolean }
+const { snap = false } = Astro.props;
+---
+<footer class:list={['foot', { snap }]} data-tone="light">
+  <div class="mark">
+    <img class="iso" src="/img/iso.png" alt="{tm}" width="200" height="200">
+    <span class="est">est. 2026</span>
+  </div>
+  <div class="social">
+    <span class="label">follow along —</span>
+    <a href="https://www.instagram.com/tinymachines.studio/" target="_blank" rel="noopener">instagram →</a>
+    <a href="https://www.linkedin.com/company/tinymachines/" target="_blank" rel="noopener">linkedin →</a>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    background: var(--paper);
+    border-top: 1px solid var(--hair);
+    padding: clamp(24px, 2.2vw, 32px) var(--pad);
+    min-height: clamp(0px, 7vw, 110px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .foot.snap { scroll-snap-align: end; }
+  .mark { display: flex; align-items: center; gap: 14px; }
+  .iso { height: clamp(20px, 1.6vw, 24px); width: auto; }
+  .est, .label { font-size: clamp(9px, 0.78vw, 11px); letter-spacing: 0.12em; color: var(--grey); }
+  .social {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 1.5vw, 22px);
+    font-size: clamp(9px, 0.78vw, 11px);
+    letter-spacing: 0.12em;
+  }
+  .social a { border-bottom: 1px solid transparent; padding-bottom: 2px; transition: border-color .15s ease; }
+  .social a:hover { border-color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .foot { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .social { flex-wrap: wrap; }
+  }
+</style>

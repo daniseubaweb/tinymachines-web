@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionNav from '../components/SectionNav.astro';
+import { team } from '../data/team';
+
+const sections = [
+  { slug: 'who', text: 'who we are' },
+  { slug: 'people', text: 'the people' },
+  { slug: 'how', text: 'how we work' },
+];
+---
+<Base title="team" description="The people behind tinymachines.">
+  <section class="hero tex">
+    <div class="kicker">team</div>
+    <h1 class="title">small studio,<br>small team.</h1>
+  </section>
+
+  <div class="layout">
+    <SectionNav items={sections} />
+    <div class="content">
+      <section id="who">
+        <h2>who we are</h2>
+        <p class="body-text">Placeholder copy. A short intro to the studio: where you are, why tinymachines exists, what you care about.</p>
+      </section>
+
+      <section id="people">
+        <h2>the people</h2>
+        <div class="people">
+          {team.map((m) => (
+            <article class="person">
+              <div class="photo" aria-hidden="true"></div>
+              <h3>{m.name}</h3>
+              <div class="role">{m.role}</div>
+              <p>{m.bio}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="how">
+        <h2>how we work</h2>
+        <p class="body-text">Placeholder copy. Built in public, slowly, with care. <a class="link" href="/manifesto">read the manifesto →</a></p>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .hero {
+    padding: clamp(48px, 5.8vw, 84px) var(--pad);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 96px);
+    padding: clamp(48px, 5.8vw, 84px) var(--pad);
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .content section { scroll-margin-top: calc(var(--head) + 24px); }
+  .content section + section { margin-top: clamp(48px, 5.8vw, 84px); }
+  h2 {
+    margin: 0 0 18px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(28px, 3vw, 44px);
+    letter-spacing: -0.02em;
+  }
+  .body-text { margin: 0; }
+
+  .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: clamp(20px, 2.2vw, 32px);
+  }
+  .photo { aspect-ratio: 4 / 5; background: var(--blue); }
+  .person h3 {
+    margin: 16px 0 4px;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 24px;
+  }
+  .role { font-size: var(--small); letter-spacing: 0.12em; color: var(--grey); }
+  .person p { font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+</style>
